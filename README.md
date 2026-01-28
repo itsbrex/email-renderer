@@ -108,10 +108,6 @@ FRONTEND_URL=http://localhost:3000
 RENDERER_API_KEY=your-secret-api-key
 ```
 
-## Architecture
-
-See [docs/architecture.md](docs/architecture.md) for detailed system design.
-
 ### High-Level Flow
 
 ```
@@ -145,11 +141,3 @@ User Input (HTML)
 2. Some Gmail-specific class prefixing behaviour may not be fully replicated
 3. Dynamic content (web fonts, external images) may load differently
 4. Outlook VML fallbacks are not fully simulated
-
-## Contributing
-
-See [docs/contributing.md](docs/contributing.md) for guidelines on:
-
-- Adding new email client renderers
-- Adding CSS compatibility rules
-- Development setup
