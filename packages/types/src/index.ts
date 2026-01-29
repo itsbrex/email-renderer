@@ -124,3 +124,6 @@ export const EMAIL_CLIENTS: Record<
     simulated: false,
   },
 };
+
+export type RendererStatus = 'checking' | 'connected' | 'disconnected';
+export type EditorMode = 'html' | 'react-email';
