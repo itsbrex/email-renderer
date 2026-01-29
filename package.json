@@ -12,7 +12,6 @@
   },
   "devDependencies": {
     "@types/node": "^20",
-    "clsx": "^2.1.1",
     "eslint": "^9",
     "prettier": "^3.8.0",
     "prettier-plugin-sort-imports": "^1.8.9",
@@ -21,8 +20,5 @@
     "turbo": "^2",
     "typescript": "^5"
   },
-  "packageManager": "bun@1.2.4",
-  "dependencies": {
-    "@base-ui/react": "^1.1.0"
-  }
+  "packageManager": "bun@1.2.4"
 }
