@@ -62,7 +62,6 @@ email-renderer/
 │   └── renderer/            # Playwright rendering service
 └── packages/
     ├── types/               # Shared TypeScript types
-    ├── core/                # Email normalisation pipeline
     ├── clients/             # Email client renderers
     └── analyser/            # DOM/CSS analysis
 ```
