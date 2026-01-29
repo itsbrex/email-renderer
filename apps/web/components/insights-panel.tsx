@@ -165,7 +165,7 @@ export function InsightsPanel({ analyses, isLoading }: InsightsPanelProps) {
           <span className="text-xs">Analysing...</span>
         </div>
       ) : sortedAnalyses.length > 0 ? (
-        <Accordion className="w-full" defaultValue={sortedAnalyses[0]?.clientId ? [sortedAnalyses[0].clientId] : []}>
+        <Accordion className="w-full">
           {sortedAnalyses.map((analysis) => (
             <ClientInsights key={analysis.clientId} analysis={analysis} />
           ))}

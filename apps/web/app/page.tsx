@@ -65,7 +65,8 @@ export default function Page() {
     }
   }, [error])
 
-  const totalWarnings = analyses.reduce((sum, a) => sum + a.warnings.length, 0)
+  const totalWarnings = analyses.reduce((sum, a) => sum + a.warnings.filter(w => w.severity === "warning").length, 0)
+  const totalErrors = analyses.reduce((sum, a) => sum + a.warnings.filter(w => w.severity === "error").length, 0)
 
   const handleRender = async () => {
     setIsLoading(true)
@@ -105,8 +106,6 @@ export default function Page() {
         rendererStatus={rendererStatus}
         onRetryConnection={checkRendererStatus}
         showAnalysis={showAnalysis}
-        onToggleAnalysis={() => setShowAnalysis(!showAnalysis)}
-        totalWarnings={totalWarnings}
       />
 
       <div className="hidden md:flex flex-1 overflow-hidden">
@@ -127,7 +126,8 @@ export default function Page() {
           </ResizablePanel>
 
           <ResizablePanel defaultSize={30}>
-            <PreviewPanel results={results} isLoading={isLoading} />
+            <PreviewPanel results={results} isLoading={isLoading} totalWarnings={totalWarnings}
+              totalErrors={totalErrors} onToggleAnalysis={() => setShowAnalysis(!showAnalysis)} />
           </ResizablePanel>
 
           {showAnalysis && (
@@ -180,7 +180,8 @@ export default function Page() {
             />
           </TabsContent>
           <TabsContent value="previews" className="flex-1 m-0 p-0 overflow-hidden">
-            <PreviewPanel results={results} isLoading={isLoading} />
+            <PreviewPanel results={results} isLoading={isLoading} totalWarnings={totalWarnings}
+              totalErrors={totalErrors} onToggleAnalysis={() => setShowAnalysis(!showAnalysis)} />
           </TabsContent>
           <TabsContent value="analysis" className="flex-1 m-0 p-0 overflow-hidden">
             <AnalysisPanel
