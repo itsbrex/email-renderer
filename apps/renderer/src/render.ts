@@ -12,22 +12,18 @@ let webkitBrowser: Browser | null = null;
 
 async function getChromiumBrowser(): Promise<Browser> {
   if (!chromiumBrowser) {
-    console.log('[RENDER] Initializing Chromium browser...');
     chromiumBrowser = await chromium.launch({
       headless: true,
     });
-    console.log('[RENDER] Chromium browser initialized');
   }
   return chromiumBrowser;
 }
 
 async function getWebkitBrowser(): Promise<Browser> {
   if (!webkitBrowser) {
-    console.log('[RENDER] Initializing WebKit browser...');
     webkitBrowser = await webkit.launch({
       headless: true,
     });
-    console.log('[RENDER] WebKit browser initialized');
   }
   return webkitBrowser;
 }
@@ -53,9 +49,6 @@ async function captureScreenshot(
   const startTime = Date.now();
 
   try {
-    console.log(
-      `${logPrefix} - Capturing screenshot with ${engine} engine, HTML size: ${html.length} bytes`,
-    );
     const browser = await getBrowserForEngine(engine);
     const context: BrowserContext = await browser.newContext({
       viewport: { width: 600, height: 800 },
@@ -64,7 +57,6 @@ async function captureScreenshot(
 
     try {
       const page = await context.newPage();
-      console.log(`${logPrefix} - Page created, setting content...`);
 
       await page.setContent(html, {
         waitUntil: 'networkidle',
@@ -72,19 +64,12 @@ async function captureScreenshot(
 
       await page.waitForTimeout(500);
 
-      console.log(`${logPrefix} - Taking screenshot...`);
       const screenshot = await page.screenshot({
         type: 'png',
         fullPage: true,
       });
 
       const finalHtml = await page.content();
-      const screenshotSize = screenshot.length;
-      const duration = Date.now() - startTime;
-
-      console.log(
-        `${logPrefix} - Screenshot captured: ${screenshotSize} bytes, final HTML: ${finalHtml.length} bytes, duration: ${duration}ms`,
-      );
 
       const base64Screenshot = `data:image/png;base64,${screenshot.toString('base64')}`;
 
@@ -94,7 +79,6 @@ async function captureScreenshot(
       };
     } finally {
       await context.close();
-      console.log(`${logPrefix} - Browser context closed`);
     }
   } catch (error) {
     const duration = Date.now() - startTime;
@@ -116,13 +100,8 @@ export async function renderEmail(
   const logPrefix = requestId ? `[RENDER] ${requestId}` : '[RENDER]';
   const results: RenderResult[] = [];
 
-  console.log(
-    `${logPrefix} - Starting render for ${clients.length} client(s): ${clients.join(', ')}`,
-  );
-
   for (const clientId of clients) {
     const clientStartTime = Date.now();
-    console.log(`${logPrefix} - Processing ${clientId}...`);
 
     try {
       let renderer;
@@ -149,20 +128,13 @@ export async function renderEmail(
           throw new Error(`Unknown client: ${clientId}`);
       }
 
-      console.log(`${logPrefix} - ${clientId}: Renderer initialized (${engine} engine)`);
       const renderResult = await renderer.render({ html, clientId });
-      console.log(
-        `${logPrefix} - ${clientId}: HTML transformed, ${renderResult.warnings.length} warning(s)`,
-      );
 
       const { screenshot, finalHtml } = await captureScreenshot(
         renderResult.finalHtml,
         engine,
         requestId,
       );
-
-      const clientDuration = Date.now() - clientStartTime;
-      console.log(`${logPrefix} - ${clientId}: Completed successfully in ${clientDuration}ms`);
 
       results.push({
         ...renderResult,
@@ -197,7 +169,6 @@ export async function renderEmail(
 
   const successCount = results.filter((r) => r.screenshotUrl).length;
   const errorCount = results.length - successCount;
-  console.log(`${logPrefix} - Render complete: ${successCount} success, ${errorCount} error(s)`);
 
   return results;
 }

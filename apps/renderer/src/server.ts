@@ -58,18 +58,15 @@ app.get('/', (c) => {
 
 app.post('/render', async (c) => {
   const requestId = `req-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-  console.log(`[SERVER] ${requestId} - POST /render request received`);
 
   try {
     const body = await c.req.json<RenderRequest>();
 
     if (!body.html || typeof body.html !== 'string') {
-      console.error(`[SERVER] ${requestId} - Missing or invalid 'html' field`);
       return c.json({ error: "Missing or invalid 'html' field" }, 400);
     }
 
     if (!body.clients || !Array.isArray(body.clients)) {
-      console.error(`[SERVER] ${requestId} - Missing or invalid 'clients' field`);
       return c.json({ error: "Missing or invalid 'clients' field" }, 400);
     }
 
@@ -77,21 +74,10 @@ app.post('/render', async (c) => {
     const invalidClients = body.clients.filter((id) => !validClients.includes(id as ClientId));
 
     if (invalidClients.length > 0) {
-      console.error(`[SERVER] Invalid client IDs requested: ${invalidClients.join(', ')}`);
       return c.json({ error: `Invalid client IDs: ${invalidClients.join(', ')}` }, 400);
     }
 
-    console.log(
-      `[SERVER] ${requestId} - Render request: ${body.clients.length} client(s) - ${body.clients.join(', ')}, HTML size: ${body.html.length} bytes`,
-    );
-    const startTime = Date.now();
-
     const results = await renderEmail(body.html, body.clients as ClientId[], requestId);
-
-    const duration = Date.now() - startTime;
-    console.log(
-      `[SERVER] ${requestId} - Render completed in ${duration}ms: ${results.length} result(s)`,
-    );
 
     const response: RenderResponse = { results };
     return c.json(response);
