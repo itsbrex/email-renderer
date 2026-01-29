@@ -39,6 +39,17 @@ const CLIENT_MAPPINGS: Record<ClientId, ClientPlatformMapping> = {
   'yahoo-mail': { family: 'yahoo', platform: 'desktop-webmail' },
 };
 
+const getClientName = (clientId: ClientId) => {
+  const mapping = CLIENT_MAPPINGS[clientId];
+  return mapping.family === 'gmail'
+    ? 'Gmail'
+    : mapping.family === 'apple-mail'
+      ? 'Apple Mail'
+      : mapping.family === 'yahoo-mail'
+        ? 'Yahoo Mail'
+        : 'Outlook';
+};
+
 let cachedData: CanIEmailData | null = null;
 let cacheTimestamp: number = 0;
 const CACHE_DURATION = 24 * 60 * 60 * 1000;
@@ -163,15 +174,7 @@ function createWarningMessage(
   status: SupportStatus,
   noteRefs: string[] = [],
 ): string {
-  const mapping = CLIENT_MAPPINGS[clientId];
-  const clientName =
-    mapping.family === 'gmail'
-      ? 'Gmail'
-      : mapping.family === 'apple-mail'
-        ? 'Apple Mail'
-        : mapping.family === 'yahoo-mail'
-          ? 'Yahoo Mail'
-          : 'Outlook';
+  const clientName = getClientName(clientId);
 
   let baseMessage = `CSS property "${feature.title}"`;
 
@@ -308,17 +311,9 @@ export async function getHTMLCompatibilityRules(
     const elementName = feature.title.trim().replace(/^<|>$/g, '').toLowerCase();
     if (!elementName) continue;
 
-    const mapping = CLIENT_MAPPINGS[clientId];
-    const clientName =
-      mapping.family === 'gmail'
-        ? 'Gmail'
-        : mapping.family === 'apple-mail'
-          ? 'Apple Mail'
-          : mapping.family === 'yahoo-mail'
-            ? 'Yahoo Mail'
-            : 'Outlook';
-
     let message = `HTML element "${elementName}"`;
+
+    const clientName = getClientName(clientId);
 
     if (supportInfo.status === 'n') {
       message += ` is not supported in ${clientName}`;
