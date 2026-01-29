@@ -16,7 +16,6 @@
     "@base-ui/react": "^1.1.0",
     "@databuddy/sdk": "^2.3.29",
     "@email-renderer/analyser": "workspace:*",
-    "@email-renderer/core": "workspace:*",
     "@email-renderer/types": "workspace:*",
     "@react-email/components": "^0.0.25",
     "@react-email/render": "^2.0.0",

@@ -49,7 +49,6 @@
         "@base-ui/react": "^1.1.0",
         "@databuddy/sdk": "^2.3.29",
         "@email-renderer/analyser": "workspace:*",
-        "@email-renderer/core": "workspace:*",
         "@email-renderer/types": "workspace:*",
         "@react-email/components": "^0.0.25",
         "@react-email/render": "^2.0.0",
@@ -94,17 +93,6 @@
         "@email-renderer/analyser": "workspace:*",
         "@email-renderer/types": "workspace:*",
         "cheerio": "^1.0.0",
-        "juice": "^11.0.0",
-      },
-      "devDependencies": {
-        "typescript": "^5",
-      },
-    },
-    "packages/core": {
-      "name": "@email-renderer/core",
-      "version": "0.0.1",
-      "dependencies": {
-        "@email-renderer/types": "workspace:*",
         "juice": "^11.0.0",
       },
       "devDependencies": {
@@ -205,8 +193,6 @@
     "@email-renderer/analyser": ["@email-renderer/analyser@workspace:packages/analyser"],
 
     "@email-renderer/clients": ["@email-renderer/clients@workspace:packages/clients"],
-
-    "@email-renderer/core": ["@email-renderer/core@workspace:packages/core"],
 
     "@email-renderer/renderer": ["@email-renderer/renderer@workspace:apps/renderer"],
 
