@@ -1,6 +1,5 @@
 'use client';
 
-import { SendTestEmailDialog } from './send-test-email-dialog';
 import { useEditor } from '@/hooks/use-editor';
 import { Switch } from './ui/switch';
 import { Button } from './ui/button';
@@ -91,8 +90,6 @@ export function EditorPanel() {
               </>
             )}
           </Button>
-
-          <SendTestEmailDialog />
         </div>
       </div>
       <div className="flex-1 overflow-auto">

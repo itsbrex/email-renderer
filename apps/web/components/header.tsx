@@ -4,7 +4,7 @@ import { SendTestEmailDialog } from './send-test-email-dialog';
 import { useEditor } from '@/hooks/use-editor';
 
 export function Header() {
-  const { rendererStatus, retryConnection, renderedHtml, editorMode, html } = useEditor();
+  const { rendererStatus, retryConnection } = useEditor();
 
   return (
     <header className="pl flex h-12 shrink-0 items-center justify-between border-b border-zinc-800 bg-zinc-800 pr-1 pl-4">
@@ -61,10 +61,8 @@ export function Header() {
           )}
         </div>
       </div>
-      <SendTestEmailDialog
-        editorMode={editorMode}
-        content={renderedHtml || (editorMode === 'html' ? html : '')}
-      />
+
+      <SendTestEmailDialog />
     </header>
   );
 }
