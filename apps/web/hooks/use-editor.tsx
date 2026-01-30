@@ -12,7 +12,6 @@ import { renderReactEmail } from '@/app/actions/react-email';
 import { analyseEmailAction } from '@/app/actions/analyse';
 import { useCheckRenderer } from './use-check-renderer';
 import { renderHtml } from '@/app/actions/render';
-import { useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 
 type EditorContextValue = {
