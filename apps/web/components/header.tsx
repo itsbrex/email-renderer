@@ -1,12 +1,13 @@
 'use client';
 
+import { SendTestEmailDialog } from './send-test-email-dialog';
 import { useEditor } from '@/hooks/use-editor';
 
 export function Header() {
-  const { rendererStatus, retryConnection } = useEditor();
+  const { rendererStatus, retryConnection, renderedHtml, editorMode, html } = useEditor();
 
   return (
-    <header className="flex h-12 shrink-0 items-center justify-between border-b border-zinc-800 bg-zinc-800 px-4">
+    <header className="pl flex h-12 shrink-0 items-center justify-between border-b border-zinc-800 bg-zinc-800 pr-1 pl-4">
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-2">
           <svg
@@ -60,6 +61,10 @@ export function Header() {
           )}
         </div>
       </div>
+      <SendTestEmailDialog
+        editorMode={editorMode}
+        content={renderedHtml || (editorMode === 'html' ? html : '')}
+      />
     </header>
   );
 }

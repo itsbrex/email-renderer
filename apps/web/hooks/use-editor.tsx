@@ -32,6 +32,7 @@ type EditorContextValue = {
   totalErrors: number;
   handleRender: () => void;
   retryConnection: () => void;
+  renderedHtml: string;
 };
 
 const EditorContext = createContext<EditorContextValue | null>(null);
@@ -44,6 +45,7 @@ export function EditorProvider({ children }: { children: ReactNode }) {
   const [analyses, setAnalyses] = useState<AnalysisResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showAnalysis, setShowAnalysis] = useState(false);
+  const [renderedHtml, setRenderedHtml] = useState('');
   const { status: rendererStatus, retry: retryConnection } = useCheckRenderer();
 
   const totalWarnings = analyses.reduce(
@@ -70,6 +72,7 @@ export function EditorProvider({ children }: { children: ReactNode }) {
       setResults(renderData.results);
 
       const htmlToAnalyse = editorMode === 'react-email' ? renderData.convertedHtml || html : html;
+      setRenderedHtml(htmlToAnalyse);
 
       try {
         const analyseData = await analyseEmailAction(htmlToAnalyse, renderData.results);
@@ -104,6 +107,7 @@ export function EditorProvider({ children }: { children: ReactNode }) {
         totalErrors,
         handleRender,
         retryConnection,
+        renderedHtml,
       }}
     >
       {children}
