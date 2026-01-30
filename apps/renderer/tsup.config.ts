@@ -36,6 +36,6 @@ export default defineConfig({
     };
     options.conditions = ['node', 'import', 'require'];
   },
-  external: ['playwright', ...nodeBuiltins],
+  external: ['playwright', 'juice', ...nodeBuiltins],
   noExternal: ['@email-renderer/clients', '@email-renderer/types'],
 });
