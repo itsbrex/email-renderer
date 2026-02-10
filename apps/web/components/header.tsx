@@ -62,7 +62,7 @@ export function Header() {
         </div>
       </div>
 
-      <SendTestEmailDialog />
+      {/* <SendTestEmailDialog /> */}
     </header>
   );
 }
