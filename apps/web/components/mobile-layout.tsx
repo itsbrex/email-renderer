@@ -4,11 +4,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AnalysisPanel } from './analysis-panel';
 import { PreviewPanel } from './preview-panel';
 import { EditorPanel } from './editor-panel';
+import { track } from '@/lib/track';
 
 export default function MobileLayout() {
   return (
     <div className="flex flex-1 overflow-hidden md:hidden">
-      <Tabs className="flex h-full w-full flex-col gap-0">
+      <Tabs
+        className="flex h-full w-full flex-col gap-0"
+        defaultValue="html"
+        onValueChange={(value) => track('mobile_tab_switched', { tab: value })}
+      >
         <TabsList
           variant="line"
           className="h-9 w-full shrink-0 rounded-none border-b border-zinc-800 bg-zinc-800 px-2"

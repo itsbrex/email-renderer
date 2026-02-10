@@ -4,6 +4,7 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './
 import type { AnalysisResult, Warning, ClientId } from '@email-renderer/types';
 import { EMAIL_CLIENTS } from '@email-renderer/types';
 import * as React from 'react';
+import { track } from '@/lib/track';
 
 interface InsightsPanelProps {
   analyses: AnalysisResult[];
@@ -205,7 +206,13 @@ export function InsightsPanel({ analyses, isLoading }: InsightsPanelProps) {
           <span className="text-xs">Analysing...</span>
         </div>
       ) : sortedAnalyses.length > 0 ? (
-        <Accordion className="w-full">
+        <Accordion
+          className="w-full"
+          onValueChange={(value) => {
+            const clientId = Array.isArray(value) ? value[0] : value;
+            if (clientId) track('analysis_accordion_expanded', { client_id: clientId });
+          }}
+        >
           {sortedAnalyses.map((analysis) => (
             <ClientInsights key={analysis.clientId} analysis={analysis} />
           ))}

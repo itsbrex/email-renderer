@@ -2,9 +2,15 @@
 
 import { SendTestEmailDialog } from './send-test-email-dialog';
 import { useEditor } from '@/hooks/use-editor';
+import { track } from '@/lib/track';
 
 export function Header() {
   const { rendererStatus, retryConnection } = useEditor();
+
+  const handleRetryConnection = () => {
+    track('retry_connection_clicked');
+    retryConnection();
+  };
 
   return (
     <header className="pl flex h-12 shrink-0 items-center justify-between border-b border-zinc-800 bg-zinc-800 pr-1 pl-4">
@@ -45,7 +51,7 @@ export function Header() {
           </span>
           {rendererStatus === 'disconnected' && (
             <button
-              onClick={retryConnection}
+              onClick={handleRetryConnection}
               className="text-zinc-400 transition-colors hover:text-white"
               title="Retry connection"
             >

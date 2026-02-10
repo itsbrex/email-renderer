@@ -13,6 +13,7 @@ import { analyseEmailAction } from '@/app/actions/analyse';
 import { useCheckRenderer } from './use-check-renderer';
 import { renderHtml } from '@/app/actions/render';
 import { toast } from 'sonner';
+import { track } from '@/lib/track';
 
 type EditorContextValue = {
   editorMode: EditorMode;
@@ -76,10 +77,13 @@ export function EditorProvider({ children }: { children: ReactNode }) {
       try {
         const analyseData = await analyseEmailAction(htmlToAnalyse, renderData.results);
         setAnalyses(analyseData.analyses);
+        track('render_completed', { editor_mode: editorMode, success: true });
       } catch (analyseErr) {
         console.error('Analysis error:', analyseErr);
+        track('render_completed', { editor_mode: editorMode, success: true, analysis_failed: true });
       }
     } catch (err) {
+      track('render_completed', { editor_mode: editorMode, success: false, error: err instanceof Error ? err.message : 'Unknown error' });
       toast.error(err instanceof Error ? err.message : 'An error occurred');
       console.error('Render error:', err);
     } finally {

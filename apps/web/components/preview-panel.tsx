@@ -7,6 +7,7 @@ import { PreviewCard } from './preview-card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { useMemo } from 'react';
+import { track } from '@/lib/track';
 
 export function PreviewPanel() {
   const { results, isLoading, totalWarnings, totalErrors, showAnalysis, setShowAnalysis } =
@@ -45,7 +46,15 @@ export function PreviewPanel() {
           </svg>
           <span className="text-sm font-medium text-zinc-300">Preview</span>
         </div>
-        <Button onClick={() => setShowAnalysis(!showAnalysis)} size="sm" className="hidden md:flex">
+        <Button
+          onClick={() => {
+            const next = !showAnalysis;
+            track('analysis_toggled', { show: next });
+            setShowAnalysis(next);
+          }}
+          size="sm"
+          className="hidden md:flex"
+        >
           <svg className="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path
               strokeLinecap="round"

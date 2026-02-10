@@ -2,6 +2,7 @@
 
 import { InsightsPanel } from './insights-panel';
 import { useEditor } from '@/hooks/use-editor';
+import { track } from '@/lib/track';
 
 export function AnalysisPanel() {
   const { analyses, isLoading, setShowAnalysis } = useEditor();
@@ -11,7 +12,10 @@ export function AnalysisPanel() {
       <div className="flex h-9 shrink-0 items-center justify-between border-b border-zinc-800 bg-zinc-800 px-4">
         <span className="text-sm font-medium text-zinc-300">Analysis</span>
         <button
-          onClick={() => setShowAnalysis(false)}
+          onClick={() => {
+            track('analysis_panel_closed');
+            setShowAnalysis(false);
+          }}
           className="hidden text-zinc-500 hover:text-zinc-300 md:block"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

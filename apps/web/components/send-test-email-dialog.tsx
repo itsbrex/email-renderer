@@ -19,6 +19,7 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { track } from '@/lib/track';
 
 export function SendTestEmailDialog() {
   const { editorMode, html, reactEmailCode } = useEditor();
@@ -38,16 +39,22 @@ export function SendTestEmailDialog() {
     setIsSending(false);
 
     if (result.success) {
+      track('send_test_email_sent', { editor_mode: editorMode });
       toast.success('Test email sent successfully!');
       setEmail('');
       setSubject('Test Email');
     } else {
+      track('send_test_email_failed', { error: result.error });
       toast.error(result.error);
     }
   };
 
   return (
-    <AlertDialog>
+    <AlertDialog
+      onOpenChange={(open) => {
+        if (open) track('send_test_email_opened');
+      }}
+    >
       <AlertDialogTrigger
         className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'border-none')}
       >
@@ -103,7 +110,10 @@ export function SendTestEmailDialog() {
           </div>
 
           <AlertDialogFooter className="mt-6 border-zinc-800 bg-zinc-800/50">
-            <AlertDialogCancel className="border-zinc-700 bg-zinc-800 text-zinc-300 hover:bg-zinc-700 hover:text-zinc-100">
+            <AlertDialogCancel
+              onClick={() => track('send_test_email_cancelled')}
+              className="border-zinc-700 bg-zinc-800 text-zinc-300 hover:bg-zinc-700 hover:text-zinc-100"
+            >
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction

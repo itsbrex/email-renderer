@@ -4,6 +4,7 @@ import { useEditor } from '@/hooks/use-editor';
 import { Switch } from './ui/switch';
 import { Button } from './ui/button';
 import dynamic from 'next/dynamic';
+import { track } from '@/lib/track';
 
 const CodeEditor = dynamic(
   () => import('@uiw/react-textarea-code-editor').then((mod) => mod.default),
@@ -37,7 +38,9 @@ export function EditorPanel() {
           <Switch
             checked={editorMode === 'react-email'}
             onCheckedChange={(checked) => {
-              setEditorMode(checked ? 'react-email' : 'html');
+              const mode = checked ? 'react-email' : 'html';
+              track('editor_mode_switched', { mode });
+              setEditorMode(mode);
             }}
             className="data-checked:bg-indigo-500 data-unchecked:bg-orange-500/60 data-checked:*:data-[slot=switch-thumb]:bg-indigo-100 data-unchecked:*:data-[slot=switch-thumb]:bg-orange-200 dark:data-checked:bg-indigo-500 dark:data-unchecked:bg-orange-500/40 data-checked:*:data-[slot=switch-thumb]:dark:bg-indigo-200 data-unchecked:*:data-[slot=switch-thumb]:dark:bg-orange-300"
           />
@@ -45,7 +48,10 @@ export function EditorPanel() {
         </div>
         <div className="flex items-center gap-1">
           <Button
-            onClick={handleRender}
+            onClick={() => {
+              track('run_preview_clicked', { editor_mode: editorMode });
+              handleRender();
+            }}
             disabled={isLoading || isEmpty || rendererStatus !== 'connected'}
             variant="secondary"
             size="sm"
